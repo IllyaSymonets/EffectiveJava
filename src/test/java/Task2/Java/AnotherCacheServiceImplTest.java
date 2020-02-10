@@ -6,12 +6,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AnotherCacheServiceTest {
+public class AnotherCacheServiceImplTest {
 
-    AnotherCacheService cacheService = new AnotherCacheService(10);
+    AnotherCacheServiceImpl cacheService = new AnotherCacheServiceImpl(10);
 
     @Before
-    public void init() throws InterruptedException {
+    public void init() {
         cacheService.put(0, "message0");
         cacheService.put(1, "message1");
         cacheService.put(2, "message2");
@@ -34,7 +34,7 @@ public class AnotherCacheServiceTest {
     }
 
     @Test
-    public void putTest() throws InterruptedException {
+    public void putTest() {
 
         cacheService.put(10, "message10");
 

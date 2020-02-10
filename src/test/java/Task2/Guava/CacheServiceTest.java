@@ -1,6 +1,6 @@
 package Task2.Guava;
 
-import Task2.Java.CacheService;
+import Task2.Java.CacheServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class CacheServiceTest {
 
-    Task2.Java.CacheService cacheService = new CacheService(10);
+    CacheServiceImpl cacheService = new CacheServiceImpl(10);
 
     @Before
     public void init() {
@@ -29,7 +29,7 @@ public class CacheServiceTest {
     public void getTest() {
         String expected = "message0";
 
-        CacheService.CacheEntry entry = cacheService.get(0);
+        CacheServiceImpl.CacheEntry entry = cacheService.get(0);
         String result = entry.getString();
 
         assertEquals(expected, result);

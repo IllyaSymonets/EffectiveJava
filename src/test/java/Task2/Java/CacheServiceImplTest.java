@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CacheServiceTest {
+public class CacheServiceImplTest {
 
-    CacheService cacheService = new CacheService(10);
+    CacheServiceImpl cacheService = new CacheServiceImpl(10);
 
     @Before
     public void init() {

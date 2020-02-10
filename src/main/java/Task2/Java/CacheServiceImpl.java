@@ -12,29 +12,28 @@ import org.slf4j.LoggerFactory;
 
 @ToString
 @Data
-public class CacheService {
+public class CacheServiceImpl {
 
     @Data
     @AllArgsConstructor
     @ToString
-    public
-    class CacheEntry {
+    public static class CacheEntry {
 
         private String string;
     }
 
     int maxSize = 100000;
-    private static Logger log = LoggerFactory.getLogger(CacheService.class);
+    private static Logger log = LoggerFactory.getLogger(CacheServiceImpl.class);
     private List<Long> putTimes = new ArrayList<>();
     private int evictionCounter = 0;
     private LinkedHashMap<Integer, CacheEntry> cacheMap;
 
-    public CacheService() {
+    public CacheServiceImpl() {
         initializeMap();
     }
 
-    public CacheService(int maxSize) {
-        this.maxSize=maxSize;
+    public CacheServiceImpl(int maxSize) {
+        this.maxSize = maxSize;
         initializeMap();
     }
 
@@ -47,29 +46,32 @@ public class CacheService {
 
     public synchronized void put(int key, String string) {
         long startTime = System.currentTimeMillis();
-
-        cacheMap.put(key, new CacheEntry(string));
+        CacheEntry entry = new CacheEntry(string);
+        cacheMap.put(key, entry);
         long endTime = System.currentTimeMillis();
         putTimes.add(endTime - startTime);
-        StringBuilder logText = new StringBuilder("");
-        log.info(logText.append("Average time for putting value: ")
-            .append(getAverageTime() / 1000)
-            .append("s").toString());
-        logText = new StringBuilder("");
-        log.info(logText.append("Total evictions: ")
-            .append(evictionCounter).toString());
+        getStats();
     }
 
     private double getAverageTime() {
-        long sum = 0;
+        double sum = 0.0;
         for (long time : putTimes) {
             sum += time;
         }
         return sum / putTimes.size();
     }
 
+    private void getStats() {
+        StringBuilder logText = new StringBuilder();
+        log.info(logText.append("Average time for putting value: ")
+            .append(getAverageTime() / 1000)
+            .append("s").toString());
+        logText = new StringBuilder();
+        log.info(logText.append("Total evictions: ")
+            .append(evictionCounter).toString());
+    }
+
     private void initializeMap() {
-        this.maxSize = maxSize;
         cacheMap = new LinkedHashMap<Integer, CacheEntry>() {
             protected synchronized boolean removeEldestEntry(Entry eldest) {
                 boolean isFull = size() > maxSize;
